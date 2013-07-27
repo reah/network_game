@@ -1,0 +1,304 @@
+                                     GRADER
+
+"This is a truthful statement of how we divided the labor for
+this project."
+
+X____________________     X____________________     X____________________     
+  Reah Miyara		     Aaron Feldman		Jack Lambert
+
+Name of student running submit: Aaron Feldman
+Login of student running submit: cs61b-et
+
+Second team member's name:Reah Miyara
+Second team member's login: cs61b-dd
+
+Third team member's name (if any):Jack Lambert
+Third team member's login: cs61b-km
+
+IMPORTANT:  Once you've submitted Project 2 once, the same team member should
+submit always.  If a different teammate must submit, inform cs61b@cory.eecs of
+all the details.  Include a complete list of team members, and let us know
+which submission you want graded.
+
+If you've submitted your project once, or even written a substantial amount of
+code together, you may not change partners without the permission of the
+instructor.
+===============================================================================
+Does your program compile without errors?
+
+Yes
+
+Have you tested your program on the machines in the Soda CS 61B lab?
+
+Yes
+
+Did you successfully implement game tree search?  Did you successfully
+implement alpha-beta pruning?  Are there any limitations on it?  What is the
+default number of search levels set by the one-parameter MachinePlayer
+constructor?
+
+We successfully implemented game tree search and alpha-beta pruning without
+limitations passing in a default search depth of 3. 
+
+Describe your board evaluation function in some detail.
+
+Our evaluation function finds the number of connected pairs for each player and
+divides the difference between the player and the opponent by the total number
+of connections.
+
+Does your MachinePlayer use any special method of choosing the first few moves?
+
+If a win is recognized in the first few moves, the board with this move is 
+rated the highest score so that chooseMove() will pick it.
+
+Is there anything else the graders should know to help them read your project?
+
+Enjoy the comments, they are concise and descriptive in cases where code is 
+"heavy".
+
+Describe the classes, modules, and interfaces you designed before and while you
+implemented the project.  Your description should include:
+  -  A list of the classes your program uses.
+  -  A list of each of the "modules" used in or by MachinePlayer, similar to
+     the list in the "Teamwork" section of the README (but hopefully more
+     detailed).
+  -  For each module, list the class(es) the module is implemented in.
+  -  For each module, say which of your team members implemented it.
+  -  For each module, describe its interface--specifically, the prototype and
+     behavior of each method that is available for external callers (outside
+     the module) to call.  Don't include methods that are only meant to be
+     called from within the module.
+
+     For each method, provide (1) a method prototype and (2) a complete,
+     unambiguous description of the behavior of the method/module.  This
+     description should also appear before the method in your code's comments.
+
+You will probably need to change some of your design decisions as you go; be
+sure to modify this file to reflect these changes before you submit your
+project.  Your design of classes and interfaces with be worth about 10% of your
+grade.
+
+
+List of classes:
+Player - a class that is extended by all Network players(both human and machine) 
+
+Move - a class that represents a move from a player
+
+MachinePlayer - an implementation of an automatic Network player. Keep track of
+moves made by both players. Can select a move for itself using chooseMove() and 
+forceMove().
+
+Board - a class that creates the internal representation of the board
+
+SpaceNode - a class that describes each cell of the game board by saying what
+the cell contains, whether this cell has been seen by network-checking functions
+and a list of all the other chips this cell can see.
+
+Best - a class that helps game tree search use alpha beta pruning and return a 
+move. This holds a move and the score the move has been evaluated to
+
+List - a class that is extended by SList to hold items in a list
+
+ListNode - a class that is extended by SListNode to hold items
+
+SList - a class that holds nodes that contains cells that a certain cell can 
+"see" (form connections with)
+
+SListNode - holds a cell that a certain cell can "see" (form connections with)
+
+
+Modules-
+
+
+**********Module #1: Aaron & Reah****************
+Board Module:
+Classes: Board and SpaceNode
+This module creates the internal representation of the board including the 
+chips it has on the board and the remaining chips left to add. It dictates
+all internal rules for self keeping the board under rules of playing a valid
+game.
+
+Board.java -
+
+/** This updates this board to add a black chip in the desired spot and 
+*   subtract from the current black chip count.
+*   @param x is the x coordinate of the location we want to add.
+*   @param y is the y coordinate of the location we want to add.
+**/
+void addBlack(int x, int y) {
+
+/** This updates this board to add a white chip in the desired spot and 
+*   subtract from the current white chip count.
+*   @param x is the x coordinate
+*   @param y is the y coordinate
+**/
+void addWhite(int x, int y) {
+
+/** This removes a chip from the board and adds a chip to the chip count.
+*   @param x is the x coordinate
+*   @param y is the y coordinate
+*   @param player is the color of chip we want to remove.
+**/
+
+
+**********Module #2: Aaron & Reah****************
+Figuring out whether the move or set of moves is valid
+Classes: Board
+This module follows all four rules to find out whether a given move is valid.
+
+/** This function returns all the valid moves possible for a certain player on
+*  on this board. The size of the array returned depends on whether ADD or 
+*  STEP moves can be performed
+*  @param player is who we want to know which moves are valid
+*  @return an array of all possible valid moves of size that varies
+*/
+Move[] validMoves(int player){
+
+/** Finds out whether a given move is valid for the player. This method takes
+*  into account the number of chips left, whether the game is over, whether
+*  the move is trying to add a chip in a spot that is not empty, and whether
+*  the chip added will create a group of 3.
+*  @param m is the move that we want to know is valid or not.
+*  @param player is the player that is making this move.
+*  @return whether the move is valid.
+**/
+boolean isValid(Move m, int player) {
+
+
+**********Module #3: Aaron & Reah****************
+Finding a network in a board
+Classes: Board
+This module searches throughout the board for a network for a player
+
+/** Returns whether this given board has a network for the specified player
+*  @param the player in question
+*  @return whether the player has a network for this board
+**/
+boolean isNetwork(int player) {
+
+/** This function fills up the SList for each SpaceNode that holds the 
+*  coordinates of the other chips of the same color it can see. If it sees a
+*  chip of another color or a chip it has already seen before, then this chip
+*  is not added to the SList.
+*  @param b is the board we are using
+*  @param x coordinate of the board
+*  @param y coordinate of the board
+*  @param player is the color of chips we are trying to see
+*  @param firstLevel is whether we are looking for the first time.
+**/
+public void basicSeerFcn(Board b, int x, int y, int player, boolean firstLevel) {
+
+/** This determines who wins. If both the opponent AND the player have networks
+*  then the opponent wins. The opponent also wins if only it has a network and
+*  the player wins if only it has a network.
+*  @param player is who we want to know wins or not
+*  @return if the player wins, player's number is returned
+*          if the opponent wins, opponent's number is returned
+*          if nobody wins, then the constant CONTINUE_SEARCH is returned
+**/
+public int findWinner (int player) {
+
+
+**********Module #4: Jack ****************
+Evaluating a board based on how likely a player can win
+Classes: Board
+
+/** This function evaluates this board and gives it a rating based on how 
+*  likely the player is at winning. If the player is on its way to losing, a
+*  negative number is returned. Otherwise a positive number is returned.
+*  @param player is who we want to find out has the upper hand or not
+*  @return a rating between the lowest and highest possible scores
+**/
+public double evaluatorFcn(int player) {
+
+
+**********Module #5: Aaron & Reah****************
+Game Tree Search, minimax and alpha beta search
+Classes: MachinePlayer
+ 
+/** Returns a new move by "this" player. Internally records the move (updates
+*  the internal game board) as a move by "this" player.
+*  @return a move by "this" player
+**/
+public Move chooseMove() {
+
+/** This function uses alpha beta minimax search to find the best move.
+*  Search goes down at most maxDepth moves and finds the best move based on
+*  ratings of the hypothetical board built. The highest and lowest scores are
+*  given to boards that have a network for a certain player. When a network
+*  hasn't been made, this function calls the evaluator function to get a score
+*  @param currPlayer is whose valid moves we are analyzing
+*  @param alpha is the highest score we have found
+*  @param beta is the lowest score we have found
+*  @param depth is the current depth of searching we are at
+*  @param maxDepth is the deepest this function can look
+*  @return a Best object holding the best move and the score it has earned
+**/
+public Best gameTreeSearch(int currPlayer, double alpha, double beta, double 
+                           depth, int maxDepth) {
+
+
+/**
+ *  Abstract Player class 
+ *  
+ */
+public class Player ()
+
+/**
+ *  An implementation of an automatic Network player.  Keeps track of moves
+ *  made by both players.  Can select a move for itself.
+ */
+public class MachinePlayer extends Player ()
+
+/**
+public class MachinePlayer extends Player {
+
+/**
+ *  An implementation of an automatic Network player.  Keeps track of moves
+ *  made by both players.  Can select a move for itself.
+ */
+public class MachinePlayer extends Player {
+
+/** Returns a new move by "this" player. Internally records the move 
+  * (updates the internal game board) as a move by "this" player.
+  * @returns a move by "this" player
+  **/
+
+public Move chooseMove() {
+
+/** This function uses alpha beta minimax search to find the best move.
+*  Search goes down at most maxDepth moves and finds the best move based on
+*  ratings of the hypothetical board built. The highest and lowest scores are
+*  given to boards that have a network for a certain player. When a network
+*  hasn't been made, this function calls the evaluator function to get a score
+*  @param currPlayer is whose valid moves we are analyzing
+*  @param alpha is the highest score we have found
+*  @param beta is the lowest score we have found
+*  @param depth is the current depth of searching we are at
+*  @param maxDepth is the deepest this function can look
+*  @return a Best object holding the best move and the score it has earned
+**/
+public Best gameTreeSearch(int currPlayer, double alpha, double beta, double 
+                          depth, int maxDepth) {
+
+
+Interface- Basic description of interactions:
+
+Module #1- Board module uses Legality module to
+check whether a move is valid before updating it. This also uses network checks
+to find out whether a given board has a network for a player
+
+Module #2- Legality module uses Board module to 
+find where a chip is placed on the board and whether there are chips around it
+that creates a bunch.
+
+Module #3- Network Checking module uses Board module to
+find where chips are located in relation to each other.
+
+Module #4- evaluation function module uses internal representation of board 
+module to find connections between chips to give a rating
+
+Module #5- gameTreeSearch module uses all the other four modules to work. It 
+looks for a network, for each valid move on each hypothetical board and uses
+the evaluation function module for whenever a network is not made.
+
